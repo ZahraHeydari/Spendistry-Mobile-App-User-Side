@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ru.nikartm.support.ImageBadgeView
+        android:id="@+id/badge"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginStart="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:ibv_badgePosition="top_right"
+        app:ibv_badgeTextSize="10sp"
+        app:ibv_badgePadding="4dp"
+        app:ibv_roundBadge="true"
+        app:ibv_badgeTextStyle="normal"
+        app:ibv_badgeTextColor="#ffffff"
+        app:ibv_badgeColor="#00ACC1"
+        app:ibv_badgeLimitValue="false"
+        android:src="@drawable/ic_report" />
+
+</FrameLayout>
