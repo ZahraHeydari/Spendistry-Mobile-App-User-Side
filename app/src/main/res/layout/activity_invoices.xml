@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/activity_invoices"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InvoicesActivity">
+    <com.google.android.material.card.MaterialCardView
+        style="@style/editPageCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_bar"
+        android:layout_alignParentTop="true"
+        app:cardElevation="16dp"
+        app:strokeWidth="0dp">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Spendistry.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/invoices_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:menu="@menu/invoice_menu"
+                app:popupTheme="@style/popupMenuBackground"
+                app:titleTextColor="@color/mainBlue" >
+                <TextView
+                    android:id="@+id/invoices_toolbar_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Invoices"
+                    android:textColor="@color/windowBlue"
+                    android:textSize="30sp" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/invoicesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="1"
+        tools:listitem="@layout/invoice_layout" />
+
+</LinearLayout>

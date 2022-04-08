@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/optLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".OtpActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/editPageCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_bar"
+        android:layout_alignParentTop="true"
+        app:cardElevation="16dp"
+        app:strokeWidth="0dp">
+
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/Otp_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:theme="@style/ActionBarStyle">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:gravity="center"
+                android:text="OTP Verify"
+                android:textColor="@color/windowBlue"
+                android:textSize="30sp" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/otp" />
+
+
+    <com.kevinschildhorn.otpview.OTPView
+        android:id="@+id/otp_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:otp_Font="@font/alata"
+        app:otp_filledFont="@font/alata"
+        app:otp_highlightedFont="@font/alata"
+        app:otp_backgroundImage="@drawable/background"
+        app:otp_cursorColor="@color/black"
+        app:otp_filledBackgroundImage="@drawable/background"
+        app:otp_filledTextSize="24sp"
+        app:otp_highlightedBackgroundImage="@drawable/background_highlighted"
+        app:otp_highlightedTextSize="24sp"
+        app:otp_itemCount="6"
+        app:otp_itemHeight="56sp"
+        app:otp_itemWidth="48sp"
+        app:otp_marginBetween="8dp"
+        app:otp_showCursor="false"
+        app:otp_textColor="@color/mainBlue"
+        app:otp_textSize="24sp" />
+
+    <TextView
+        android:id="@+id/resend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/didnt_receive_otp" />
+    </LinearLayout>
+</LinearLayout>

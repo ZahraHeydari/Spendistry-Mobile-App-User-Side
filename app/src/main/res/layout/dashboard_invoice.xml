@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    app:cardBackgroundColor="@color/cardBlue"
+    app:strokeWidth="0dp"
+    app:cardCornerRadius="12dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/business_profile"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:riv_corner_radius="35dp"
+        android:layout_marginStart="12dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/no_profile" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/business_email"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/mainBlue"
+            android:textSize="16sp"
+            tools:text="shashank@gmail.com" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/monthlyTextView"
+                android:layout_width="0dp"
+                android:layout_weight=".6"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alata"
+                android:text="@string/monthly_exp"
+                android:textColor="#03045E"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/business_monthly_exp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".4"
+                android:fontFamily="@font/alata"
+                android:textColor="@color/material_white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".6"
+                android:fontFamily="@font/alata"
+                android:text="@string/yearly_exp"
+                android:textColor="#03045E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/business_all_exp"
+                android:layout_width="0dp"
+                android:layout_weight=".4"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alata"
+                android:textColor="@color/material_white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

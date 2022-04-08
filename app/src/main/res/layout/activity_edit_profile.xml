@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/profile_layout"
+    android:orientation="vertical"
+    tools:context=".EditProfileActivity">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/editPageCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_bar"
+        android:layout_alignParentTop="true"
+        app:cardElevation="16dp"
+        app:strokeWidth="0dp">
+
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:theme="@style/ActionBarStyle">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Edit Profile"
+                android:textColor="@color/windowBlue"
+                android:textSize="30sp" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <ScrollView
+        android:id="@+id/scrollView_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/done"
+        android:padding="6dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
+
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/profile_image"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="100dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:riv_corner_radius="70dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:textColorHint="@color/mainBlue"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/mainBlue"
+                app:hintTextColor="@color/mainBlue">
+
+                <!--this is the actual edit text which takes the input-->
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/alata"
+                    android:inputType="textEmailAddress"
+                    android:text="Ex: spendistry@gmail.com"
+                    android:enabled="false"
+                    android:textColor="@color/mainBlue"
+                    android:minHeight="48dp"
+                    android:textCursorDrawable="@drawable/cursor_drawable" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/first_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="8dp"
+                android:hint="First Name"
+                android:textColorHint="@color/mainBlue"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/mainBlue"
+                app:hintTextColor="@color/mainBlue">
+
+                <!--this is the actual edit text which takes the input-->
+                <EditText
+                    android:id="@+id/first_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/alata"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    android:textCursorDrawable="@drawable/cursor_drawable" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/last_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Last Name"
+                android:textColorHint="@color/mainBlue"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/mainBlue"
+                app:hintTextColor="@color/mainBlue">
+
+                <!--this is the actual edit text which takes the input-->
+                <EditText
+                    android:id="@+id/last_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/alata"
+                    android:inputType="textPersonName"
+                    android:minHeight="48dp"
+                    android:textCursorDrawable="@drawable/cursor_drawable" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phone_number_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="6dp"
+
+                android:layout_marginBottom="8dp"
+                android:hint="Mobile Number"
+                android:textColorHint="@color/mainBlue"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/mainBlue"
+                app:hintTextColor="@color/mainBlue">
+
+                <!--this is the actual edit text which takes the input-->
+                <EditText
+                    android:id="@+id/phone_number_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/alata"
+                    android:inputType="phone"
+                    android:minHeight="48dp"
+                    android:textCursorDrawable="@drawable/cursor_drawable" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Address"
+                android:textColorHint="@color/mainBlue"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/mainBlue"
+                app:hintTextColor="@color/mainBlue">
+
+                <!--this is the actual edit text which takes the input-->
+                <EditText
+                    android:id="@+id/address_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/alata"
+                    android:inputType="textPostalAddress"
+                    android:minHeight="48dp"
+                    android:textCursorDrawable="@drawable/cursor_drawable" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/update_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/mainBlue"
+        android:text="Update Profile"
+        app:layout_constraintVertical_bias="1.0" />
+
+</RelativeLayout>
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+

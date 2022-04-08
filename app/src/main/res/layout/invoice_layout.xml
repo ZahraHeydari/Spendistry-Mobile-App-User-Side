@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="4dp"
+    app:cardBackgroundColor="@color/cardBlue"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="16dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/business_name_invoice1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="6dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/mainBlue"
+                android:textSize="24sp"
+                tools:text="Spendistry" />
+            <ImageButton
+                android:id="@+id/report_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/zxing_transparent"
+                android:contentDescription="@string/done"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:paddingStart="6dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="6dp"
+                app:srcCompat="@drawable/ic_report"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageButton
+                android:id="@+id/download_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/zxing_transparent"
+                android:contentDescription="@string/done"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:paddingStart="6dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="6dp"
+                app:srcCompat="@drawable/download"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/business_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="Address: 123 Main St, San Francisco, CA" />
+
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="SUBJECT TO ANAND JURISDICTION ONLY" />
+
+        <TextView
+            android:id="@+id/gst_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="GST number: DFGJ234239SDFS3D" />
+
+        <TextView
+            android:id="@+id/business_email_invoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="Business Email: sha@gmail.com" />
+
+        <TextView
+            android:id="@+id/business_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="Business Contect No: (123) 456-7890" />
+
+        <TextView
+            android:id="@+id/invoice_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="Invoice Time: 12:00 PM" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/customer_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="Customer: shashank mistry" />
+
+            <TextView
+                android:id="@+id/invoice_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="Invoice No: 1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/title_layout">
+
+            <TextView
+                android:id="@+id/item_nested_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textColor="@color/mainBlue"
+                android:textSize="16sp"
+                android:text="@string/item" />
+
+            <TextView
+                android:id="@+id/quantity_nested_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight=".6"
+
+                android:gravity="start"
+                android:textColor="@color/mainBlue"
+                android:textSize="16sp"
+                android:text="@string/qnt" />
+
+            <TextView
+                android:id="@+id/price_nested_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+
+                android:layout_weight=".8"
+                android:gravity="center"
+                android:textColor="@color/mainBlue"
+                android:textSize="16sp"
+                android:text="@string/price" />
+
+            <TextView
+                android:id="@+id/total_nested_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+
+                android:layout_weight=".8"
+                android:gravity="end"
+                android:textColor="@color/mainBlue"
+                android:textSize="16sp"
+                android:text="@string/total" />
+
+
+        </LinearLayout>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/invoice_recyclerview" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/invoice_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="Discount: $0.00" />
+
+            <TextView
+                android:id="@+id/invoice_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@color/mainBlue"
+                android:textSize="16sp"
+                tools:text="Total: $0.00" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/invoice_igst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="gst: $0.00" />
+
+            <TextView
+                android:id="@+id/invoice_utgst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="utgst: $0.00" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/invoice_cgst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="cgst: $0.00" />
+
+            <TextView
+                android:id="@+id/invoice_sgst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/mainBlue"
+                android:textSize="14sp"
+                tools:text="sgst: $0.00" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/round_off"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:gravity="end"
+            android:textColor="@color/mainBlue"
+            android:textSize="16sp"
+            tools:text="Round off: $0.00" />
+
+        <TextView
+            android:id="@+id/payment_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text="Payment mode: cash" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/mainBlue"
+            android:textSize="14sp"
+            tools:text=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+optio, eaque rerum! Provident similique accusantium nemo autem." />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

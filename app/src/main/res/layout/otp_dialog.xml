@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/windowBlue"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.kevinschildhorn.otpview.OTPView
+                android:id="@+id/otp_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:importantForAutofill="no"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:otp_Font="@font/alata"
+                app:otp_backgroundImage="@drawable/background"
+                app:otp_cursorColor="@color/black"
+                app:otp_filledBackgroundImage="@drawable/background"
+                app:otp_filledTextSize="24sp"
+                app:otp_highlightedBackgroundImage="@drawable/background_highlighted"
+                app:otp_highlightedTextSize="24sp"
+                app:otp_itemCount="4"
+                app:otp_itemHeight="56sp"
+                app:otp_itemWidth="48sp"
+                app:otp_marginBetween="8dp"
+                app:otp_showCursor="false"
+                app:otp_textColor="@color/mainBlue"
+                app:otp_textSize="24sp" />
+
+            <TextView
+                android:id="@+id/resend_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="@string/didnt_receive_otp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
