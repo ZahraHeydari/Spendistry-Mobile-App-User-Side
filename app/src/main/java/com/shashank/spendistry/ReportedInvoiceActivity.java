@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -53,7 +54,17 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -145,19 +156,16 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
     public void deleteDialog(Report report, LinearLayout linearLayout) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.delete_dialog);
-        dialog.getWindow().setLayout(800, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
         Button remove = dialog.findViewById(R.id.delete_btn);
         Button cancel = dialog.findViewById(R.id.cancel_delete_btn);
-        TextView barcode = dialog.findViewById(R.id.barcode_delete);
-        TextView itemName = dialog.findViewById(R.id.item_name_delete);
-        TextView itemPrice = dialog.findViewById(R.id.item_price_delete);
+        TextView clientEmail = dialog.findViewById(R.id.barcode_delete);
+        TextView reason = dialog.findViewById(R.id.item_price_delete);
         remove.setText("Remove");
         cancel.setText("Cancel");
-        barcode.setText("Client: " + report.getClientName());
-        itemName.setText("Contact: " + report.getClientPhone());
-        itemPrice.setText("Reason: " + report.getReason());
+        clientEmail.setText("Client: " + report.getClientEmail());
+        reason.setText("Reason: " + report.getReason());
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,4 +211,5 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
 }

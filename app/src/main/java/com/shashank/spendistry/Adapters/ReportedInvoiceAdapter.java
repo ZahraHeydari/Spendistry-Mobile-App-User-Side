@@ -2,11 +2,13 @@ package com.shashank.spendistry.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.shashank.spendistry.BusinessProfileActivity;
+import com.shashank.spendistry.InvoicesActivity;
 import com.shashank.spendistry.Models.Report;
 import com.shashank.spendistry.R;
 
@@ -74,8 +77,8 @@ public class ReportedInvoiceAdapter extends RecyclerView.Adapter<ReportedInvoice
         holder.date.setText("Date: " + reportInvoiceList.get(position).getDate());
         holder.reason.setText("Reason: " + reportInvoiceList.get(position).getReason());
         holder.name.setPaintFlags(holder.name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        holder.email.setPaintFlags(holder.email.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
-        holder.contact.setPaintFlags(holder.contact.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        holder.email.setPaintFlags(holder.email.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.contact.setPaintFlags(holder.contact.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +106,18 @@ public class ReportedInvoiceAdapter extends RecyclerView.Adapter<ReportedInvoice
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + reportInvoiceList.get(position).getBusinessPhone()));
                 activity.startActivity(intent);
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //open invoice activity
+                Intent intent = new Intent(context, InvoicesActivity.class);
+                intent.putExtra("activity", "reported");
+                intent.putExtra("invoiceId", reportInvoiceList.get(position).getInvoiceID());
+                intent.putExtra("business_email", reportInvoiceList.get(position).getBusinessEmail());
+                context.startActivity(intent);
             }
         });
 

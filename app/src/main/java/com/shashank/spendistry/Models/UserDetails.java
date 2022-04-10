@@ -32,7 +32,6 @@ public class UserDetails implements Parcelable {
         this.email = _id;
         this.mobileNumber = mobileNumber;
         this.address = address;
-        this.date = date;
     }
 
     protected UserDetails(Parcel in) {

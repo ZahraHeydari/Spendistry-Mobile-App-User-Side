@@ -20,6 +20,14 @@ public class Auth implements Parcelable {
         this.message = message;
     }
 
+    public Auth(String email) {
+        this.email = email;
+    }
+
+    public Auth(){
+
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

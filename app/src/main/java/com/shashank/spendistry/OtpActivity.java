@@ -67,6 +67,8 @@ public class OtpActivity extends AppCompatActivity {
                     Intent intent1 = new Intent(OtpActivity.this, ForgotPasswordActivity.class);
                     intent1.putExtra("email", email);
                     startActivity(intent1);
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 } else if (response.equals("401")) {
                     Snackbar snackbar = Snackbar.make(optLayout, "Invalid OTP!", Snackbar.LENGTH_SHORT);
                     snackbar.setTextColor(Color.WHITE);
@@ -104,4 +106,5 @@ public class OtpActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

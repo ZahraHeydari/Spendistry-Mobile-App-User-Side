@@ -5,8 +5,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,11 +17,17 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.kevinschildhorn.otpview.OTPView;
 import com.shashank.spendistry.Models.Auth;
+import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.Models.Users;
 import com.shashank.spendistry.ViewModels.AuthViewModel;
 
@@ -27,6 +36,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText firstName, lastName, mobileNumber, email, password, password2, address;
@@ -34,6 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
                             passwordLayout, rePasswordLayout, addressLayout;
     private SharedPreferences sharedPreferences;
     private AuthViewModel authViewModel;
+    private LinearLayout linearLayout;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         rePasswordLayout = findViewById(R.id.rePasswordLayout);
         addressLayout = findViewById(R.id.addressLayout);
         ScrollView scrollView = findViewById(R.id.scrollView);
+        linearLayout = findViewById(R.id.activity_register);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
 
@@ -73,9 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String fname = firstName.getText().toString();
                 String lname = lastName.getText().toString();
                 String mob = mobileNumber.getText().toString();
-                String add = address.getText().toString();
 
-                if (fname.equals("") || lname.equals("") || mob.equals("") || email_id.equals("") || pass.equals("") || pass2.equals("") || add.equals("")) {
+                if (fname.equals("") || lname.equals("") || mob.equals("") || email_id.equals("") || pass.equals("") || pass2.equals("")) {
                     if (fname.equals("")) {
                         firstNameLayout.setError("First Name is required");
                         scrollView.scrollTo(0, firstName.getTop());
@@ -96,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }, 2000);
                     } else if (mob.equals("") || mob.length() != 10) {
                         mobileNumberLayout.setError("Mobile Number is required");
-                        scrollView.scrollTo(0, mobileNumber.getTop());
+                        scrollView.scrollTo(0, mobileNumber.getBottom());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -134,7 +153,12 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     if (pass.equals(pass2)) {
                         //send otp
-                        register(email_id);
+                        if (!send.getText().toString().equals("Next")) {
+                            authViewModel.newOTP(linearLayout, email.getText().toString());
+                            register(email_id);
+                        } else {
+                            scrollView.scrollTo(0,scrollView.getBottom());
+                        }
                     }
                 }
 
@@ -156,33 +180,62 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(String email) {
-        authViewModel.createAccount(new Auth(email, password.getText().toString())).observe(this, new Observer<Auth>() {
-                    /**
-                     * Called when the data is changed.
-                     *
-                     * @param auth The new data
-                     */
+        Dialog dialog = new Dialog(RegisterActivity.this);
+        dialog.setContentView(R.layout.otp_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        final OTPView otpField = dialog.findViewById(R.id.otp_field);
+        final TextView resendOtp = dialog.findViewById(R.id.resend_dialog);
+        dialog.show();
+
+        resendOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                authViewModel.newOTP(linearLayout, email);
+            }
+        });
+        otpField.setOnFinishListener(new Function1<String, Unit>() {
+            @Override
+            public Unit invoke(String s) {
+                authViewModel.verifyOTP(linearLayout, email, Integer.parseInt(s)).observe(RegisterActivity.this, new Observer<String>() {
                     @Override
-                    public void onChanged(Auth auth) {
-//                        int OTP = loginViewModel.sendEmail(email);
-                        authViewModel.addUser(new Users(email, firstName.getText().toString(), lastName.getText().toString(),
-                                email, mobileNumber.getText().toString(), address.getText().toString())).observe(RegisterActivity.this, new Observer<Users>() {
-                            /**
-                             * Called when the data is changed.
-                             *
-                             * @param users The new data
-                             */
-                            @Override
-                            public void onChanged(Users users) {
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-//                                intent.putExtra("OTP", OTP);
-                                startActivity(intent);
-                            }
-                        });
+                    public void onChanged(String s) {
+                        if (s.equals("201")) {
+                            dialog.dismiss();
+                            Dialog dialog1 = new Dialog(RegisterActivity.this);
+                            dialog1.setContentView(R.layout.loading_layout);
+                            dialog1.setCancelable(false);
+                            dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialog1.show();
+                            authViewModel.createAccount(new Auth(email, password.getText().toString())).observe(RegisterActivity.this, new Observer<Auth>() {
+                                @Override
+                                public void onChanged(Auth auth) {
+                                    if(auth.getMessage() == null) {
+                                        authViewModel.addUser(new UserDetails(email, firstName.getText().toString(), lastName.getText().toString(),
+                                                mobileNumber.getText().toString(), address.getText().toString())).observe(RegisterActivity.this, new Observer<UserDetails>() {
+                                            @Override
+                                            public void onChanged(UserDetails users) {
+                                                dialog1.dismiss();
+                                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+                                                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                                            }
+                                        });
+                                    } else if (auth.getMessage().equals("Email already exists")) {
+                                        dialog1.dismiss();
+                                        Snackbar snackbar = Snackbar.make(linearLayout, "Email already exists!!", Snackbar.LENGTH_SHORT);
+                                        snackbar.setTextColor(Color.WHITE);
+                                        snackbar.setBackgroundTint(getResources().getColor(R.color.red));
+                                        snackbar.show();
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
-
-
+                return null;
+            }
+        });
 
     }
 

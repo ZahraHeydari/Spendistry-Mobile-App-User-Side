@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.shashank.spendistry.Constants.Constants;
 import com.shashank.spendistry.InvoicesActivity;
@@ -29,6 +32,7 @@ import com.shashank.spendistry.R;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +59,7 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
         return new DashboardInvoiceAdapter.ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull DashboardInvoiceAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.business_email.setText(businessDetails.get(position).getBusinessEmail());
@@ -66,10 +71,21 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, InvoicesActivity.class);
-                intent.putExtra("business_email",businessDetails.get(position).getBusinessEmail());
-                intent.putExtra("activity","dashboard");
-                activity.startActivity(intent);
+                try {
+                    if (isConnected()) {
+                        Intent intent = new Intent(activity, InvoicesActivity.class);
+                        intent.putExtra("business_email", businessDetails.get(position).getBusinessEmail());
+                        intent.putExtra("activity", "dashboard");
+                        activity.startActivity(intent);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.linear_layout), "Internet is not available", Snackbar.LENGTH_SHORT);
+                        snackbar.setTextColor(Color.WHITE);
+                        snackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red));
+                        snackbar.show();
+                    }
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -78,6 +94,12 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
     @Override
     public int getItemCount() {
         return businessDetails.size();
+    }
+
+    public boolean isConnected() throws IOException, InterruptedException {
+        String command="";
+        command = "ping -c 1 www.google.com";
+        return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 
     @SuppressLint("NotifyDataSetChanged")

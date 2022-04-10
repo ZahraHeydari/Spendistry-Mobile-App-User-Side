@@ -2,20 +2,27 @@ package com.shashank.spendistry.Repositories;
 
 import android.app.Application;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shashank.spendistry.Constants.Constants;
+import com.shashank.spendistry.Dao.DashboardDao;
+import com.shashank.spendistry.Database.SpendistryDatabase;
 import com.shashank.spendistry.Models.Dashboard;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.SpendistryApi.SpendistryApi;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -29,43 +36,95 @@ public class DashboardRepository {
     private Gson gson = new GsonBuilder().setLenient().create();
     private Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
     SpendistryApi api = retrofit.create(SpendistryApi.class);
+    private SpendistryDatabase database;
 
     public DashboardRepository(Application application) {
         this.application = application;
+        database = SpendistryDatabase.getInstance(application);
+    }
+
+    public boolean isConnected() throws IOException, InterruptedException {
+        String command="";
+        command = "ping -c 1 www.google.com";
+        return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 
     public MutableLiveData<Dashboard> getDashboard(LinearLayout linearLayout,String email) {
-        MutableLiveData<Dashboard> dashboard = new MutableLiveData<>();
-        Call<Dashboard> call = api.getDashboard(email);
-        call.enqueue(new Callback<Dashboard>() {
-            @Override
-            public void onResponse(Call<Dashboard> call, Response<Dashboard> response) {
-                if (response.isSuccessful()) {
-                    dashboard.setValue(response.body());
-                    return;
-                }
-                dashboard.setValue(null);
-            }
-
-            @Override
-            public void onFailure(Call<Dashboard> call, Throwable t) {
-                if (Objects.requireNonNull(t.getMessage()).startsWith("Unable to resolve host")) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                            snackbar.setTextColor(Color.WHITE);
-                            snackbar.setBackgroundTint(ContextCompat.getColor(application,R.color.red));
-                            snackbar.show();
+        MutableLiveData<Dashboard> dashboardMutableLiveData = new MutableLiveData<>();
+        try {
+            if (isConnected()) {
+                Call<Dashboard> call = api.getDashboard(email);
+                call.enqueue(new Callback<Dashboard>() {
+                    @Override
+                    public void onResponse(Call<Dashboard> call, Response<Dashboard> response) {
+                        if (response.isSuccessful()) {
+                            dashboardMutableLiveData.setValue(response.body());
+                            new addDashboardData(application, database).execute(response.body());
                         }
-                    },500);
+                        dashboardMutableLiveData.setValue(null);
+                    }
 
-//                    businessDB.dashboardDao().getDashboardData(email).observeForever(dashboard -> {
-//                        dashboardData.setValue(dashboard);
-//                    });
-                }
+                    @Override
+                    public void onFailure(Call<Dashboard> call, Throwable t) {
+                        if (Objects.requireNonNull(t.getMessage()).startsWith("Unable to resolve host")) {
+                            database.dashboardDao().getDashboard(email).observeForever(new Observer<Dashboard>() {
+                                @Override
+                                public void onChanged(Dashboard dashboard) {
+                                    dashboardMutableLiveData.setValue(dashboard);
+                                }
+                            });
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                                    snackbar.setTextColor(Color.WHITE);
+                                    snackbar.setBackgroundTint(ContextCompat.getColor(application, R.color.red));
+                                    snackbar.show();
+                                }
+                            }, 500);
+
+                        }
+                    }
+                });
             }
-        });
-        return dashboard;
+        else {
+               database.dashboardDao().getDashboard(email).observeForever(new Observer<Dashboard>() {
+                   @Override
+                   public void onChanged(Dashboard dashboard) {
+                       dashboardMutableLiveData.setValue(dashboard);
+                       Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                       snackbar.setTextColor(Color.WHITE);
+                       snackbar.setBackgroundTint(ContextCompat.getColor(application, R.color.red));
+                       snackbar.show();
+                   }
+               });
+
+            }
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return dashboardMutableLiveData;
+    }
+
+    static class addDashboardData extends AsyncTask<Dashboard, Void, Void> {
+        private final DashboardDao dashboardDao;
+        private final Application application;
+
+        addDashboardData(Application application, SpendistryDatabase spendistryDatabase) {
+            this.application = application;
+            dashboardDao = spendistryDatabase.dashboardDao();
+        }
+
+        @Override
+        protected Void doInBackground(Dashboard... dashboard) {
+            dashboardDao.deleteAll();
+            dashboardDao.addDashboardData(dashboard[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
     }
 }

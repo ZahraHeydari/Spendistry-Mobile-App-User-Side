@@ -59,6 +59,13 @@ public class EditProfileActivity extends AppCompatActivity {
     private String emailStr;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
@@ -136,6 +143,7 @@ public class EditProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, OtpActivity.class);
             intent.putExtra("email", emailStr);
             startActivity(intent);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
         return super.onOptionsItemSelected(item);
     }

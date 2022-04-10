@@ -62,6 +62,14 @@ public class InvoiceViewModel extends AndroidViewModel {
         return invoiceRepository.getReturnedInvoices(email);
     }
 
+    public MutableLiveData<Report> reportInvoice(Report report){
+        return invoiceRepository.reportInvoice(report);
+    }
+
+    public MutableLiveData<ArrayList<Invoice>> getSingleReportedInvoice(String email, String businessEmail, String invoiceID){
+        return invoiceRepository.getSingleReportedInvoice(email, businessEmail, invoiceID);
+    }
+
 
 
 

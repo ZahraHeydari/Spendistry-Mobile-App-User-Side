@@ -39,11 +39,15 @@ public class AuthViewModel extends AndroidViewModel {
         AuthRepository.sendOTP(linearLayout,email);
     }
 
+    public void newOTP(LinearLayout linearLayout,String email){
+        AuthRepository.newOTP(linearLayout,email);
+    }
+
     public MutableLiveData<String> verifyOTP(LinearLayout linearLayout,String email, int otp) {
         return AuthRepository.verifyOTP(linearLayout,email,otp);
     }
 
-    public MutableLiveData<Users> addUser(Users users){
+    public MutableLiveData<UserDetails> addUser(UserDetails users){
         return AuthRepository.createUser(users);
     }
 

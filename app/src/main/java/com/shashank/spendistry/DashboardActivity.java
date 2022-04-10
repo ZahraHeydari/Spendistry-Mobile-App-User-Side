@@ -37,12 +37,21 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.shashank.spendistry.databinding.ActivityDashboardBinding;
 import com.shashank.spendistry.ui.home.HomeFragment;
 
+import java.io.IOException;
+
 import ru.nikartm.support.ImageBadgeView;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private ActivityDashboardBinding binding;
     private ImageBadgeView imageBadgeView;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

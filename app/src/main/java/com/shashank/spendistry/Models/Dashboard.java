@@ -4,12 +4,23 @@ package com.shashank.spendistry.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+@Entity(tableName = "dashboard")
 public class Dashboard implements Parcelable {
     @SerializedName("_id")
+    @ColumnInfo(name = "id")
+    @PrimaryKey
+    @NonNull
+    private String id;
+
     public String email;
     @SerializedName("MonthlyTotalAll")
     public int monthlyTotalAll;
@@ -50,6 +61,14 @@ public class Dashboard implements Parcelable {
             return new Dashboard[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getReportCount() {
         return reportCount;

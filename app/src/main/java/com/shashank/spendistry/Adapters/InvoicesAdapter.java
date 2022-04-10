@@ -1,13 +1,18 @@
 package com.shashank.spendistry.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,8 +28,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.shashank.spendistry.Models.BusinessDetail;
 import com.shashank.spendistry.Models.Invoice;
+import com.shashank.spendistry.Models.Report;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.ViewModels.InvoiceViewModel;
 
@@ -119,7 +126,47 @@ public class InvoicesAdapter extends RecyclerView.Adapter<InvoicesAdapter.ViewHo
         holder.report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "report", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.report_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCancelable(true);
+                dialog.show();
+                TextView report = dialog.findViewById(R.id.report_business);
+                EditText reportReason = dialog.findViewById(R.id.report_reason_edit);
+                TextInputLayout reportLayout = dialog.findViewById(R.id.report_reason);
+                Button reportButton = dialog.findViewById(R.id.report_button);
+                report.setText("Business Email: " + invoice.getSentBy());
+
+                reportButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        String reason = reportReason.getText().toString();
+                        if (!reason.isEmpty()) {
+                            //send
+                            invoiceViewModel.reportInvoice(new Report(invoice.getInvoiceId(),invoice.getSentTo(), invoice.getTitle(), invoice.getBusinessContactNo(),invoice.getSentBy(), reason)).observe(lifecycleOwner, new Observer<Report>() {
+                                @Override
+                                public void onChanged(Report report) {
+                                    if (report != null) {
+                                        Snackbar snackbar = Snackbar.make(linearLayout, "Invoice Reported", Snackbar.LENGTH_SHORT);
+                                        snackbar.setTextColor(Color.WHITE);
+                                        snackbar.setBackgroundTint(context.getResources().getColor(R.color.cardBlue));
+                                        snackbar.show();
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
+                        } else {
+                            reportLayout.setError("Please enter a reason");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    reportLayout.setErrorEnabled(false);
+                                }
+                            },2000);
+                        }
+                    }
+                });
             }
         });
 

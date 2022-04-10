@@ -41,6 +41,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -72,14 +78,15 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, OtpActivity.class);
                     intent.putExtra("email", email.getText().toString());
                     startActivity(intent);
-                }else {
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                } else {
                     email_login_field.setError("Enter Email");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             email_login_field.setErrorEnabled(false);
                         }
-                    },2500);
+                    }, 2500);
 
                 }
             }
@@ -91,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
@@ -135,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                     Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                     startActivity(intent);
+                                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                                    finish();
                                 }
                             } else {
                                 dialog.dismiss();

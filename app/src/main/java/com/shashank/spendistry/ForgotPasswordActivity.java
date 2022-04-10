@@ -36,8 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

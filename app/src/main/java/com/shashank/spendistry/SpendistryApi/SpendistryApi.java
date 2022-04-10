@@ -56,16 +56,22 @@ public interface SpendistryApi {
     @GET("return/useremail/{email}")
     Call<ArrayList<Invoice>> getReturnedInvoices(@Path("email") String email);
 
+    @GET("invoice/findEle/{email}/{businessEmail}/{invoiceId}")
+    Call<Invoice> getSingleReportedInvoice(@Path("email") String email, @Path("businessEmail") String businessEmail, @Path("invoiceId") String invoiceId);
+
 
     //POST
     @POST("user")
-    Call<Users> createUser( @Body Users user);
+    Call<UserDetails> createUser(@Body UserDetails user);
 
     @POST("auth/userLogin")
     Call<JsonElement> getAuth(@Body Auth auth);
 
     @POST("auth")
     Call<Auth> createAccount( @Body Auth auth);
+
+    @POST("invoice")
+    Call<Auth> createInvoice(@Body Auth auth);
 
     @POST("otp/forgotPassword")
     Call<String> sendOTP(@Body OTP otp);
@@ -79,6 +85,9 @@ public interface SpendistryApi {
     @Multipart
     @POST("user/uploadImage/{email}")
     Call<okhttp3.ResponseBody> setNewProfilePic(@Path("email") String email, @Part MultipartBody.Part image  );
+
+    @POST("report")
+    Call<Report> reportInvoice(@Body Report report);
 
 
     //PATCH

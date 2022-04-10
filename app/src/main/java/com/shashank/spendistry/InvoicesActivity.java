@@ -1,5 +1,6 @@
 package com.shashank.spendistry;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -14,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -32,6 +34,23 @@ public class InvoicesActivity extends AppCompatActivity {
     private TextView toolbarTitle;
     private LinearLayout linearLayout;
     private RecyclerView recyclerView;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -62,7 +81,7 @@ public class InvoicesActivity extends AppCompatActivity {
             invoiceViewModel.getBusinessInvoices(email,business_Email).observe(this, new Observer<ArrayList<Invoice>>() {
                 @Override
                 public void onChanged(ArrayList<Invoice> invoices) {
-                    getInvoices(email,invoices,false,dialog);
+                    getInvoices(invoices,false,dialog);
                 }
             });
         } else if (activity.equals("all")) {
@@ -70,22 +89,33 @@ public class InvoicesActivity extends AppCompatActivity {
             invoiceViewModel.getAllInvoices(email).observe(this, new Observer<ArrayList<Invoice>>() {
                 @Override
                 public void onChanged(ArrayList<Invoice> invoices) {
-                    getInvoices(email,invoices,false,dialog);
+                    getInvoices(invoices,false,dialog);
                 }
             });
-        } else {
+        } else if(activity.equals("reported")) {
+            business_Email = intent.getStringExtra("business_email");
+            String invoiceId = intent.getStringExtra("invoiceId");
+            toolbarTitle.setText("Reported Invoices");
+            invoiceViewModel.getSingleReportedInvoice(email, business_Email, invoiceId).observe(this, new Observer<ArrayList<Invoice>>() {
+                @Override
+                public void onChanged(ArrayList<Invoice> invoices) {
+                    getInvoices(invoices,true,dialog);
+                }
+            });
+
+        }else {
             toolbarTitle.setText("Returned Invoices");
             invoiceViewModel.getReturnedInvoices(email).observe(this, new Observer<ArrayList<Invoice>>() {
                 @Override
                 public void onChanged(ArrayList<Invoice> invoices) {
-                    getInvoices(email,invoices,true,dialog);
+                    getInvoices(invoices,true,dialog);
                 }
             });
         }
     }
 
-    public void getInvoices(String email,ArrayList<Invoice> invoices, boolean returned, Dialog dialog) {
-        invoicesAdapter = new InvoicesAdapter(invoices, linearLayout ,InvoicesActivity.this, true);
+    public void getInvoices(ArrayList<Invoice> invoices, boolean returned, Dialog dialog) {
+        invoicesAdapter = new InvoicesAdapter(invoices, linearLayout ,InvoicesActivity.this, returned);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(InvoicesActivity.this);
         recyclerView.setAdapter(invoicesAdapter);
         recyclerView.setHasFixedSize(true);

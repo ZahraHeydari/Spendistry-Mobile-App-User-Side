@@ -32,14 +32,6 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/item_name_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:paddingStart="40dp"
-        android:text="TextView" />
-
-    <TextView
         android:id="@+id/item_price_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

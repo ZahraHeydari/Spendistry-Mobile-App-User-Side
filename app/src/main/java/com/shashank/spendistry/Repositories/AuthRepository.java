@@ -1,5 +1,6 @@
 package com.shashank.spendistry.Repositories;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import com.shashank.spendistry.Constants.Constants;
 import com.shashank.spendistry.LoginActivity;
 import com.shashank.spendistry.Models.Auth;
 import com.shashank.spendistry.Models.OTP;
+import com.shashank.spendistry.Models.Root;
 import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.Models.Users;
 import com.shashank.spendistry.R;
@@ -241,35 +243,54 @@ public class AuthRepository {
         });
     }
 
-    public MutableLiveData<Users> createUser( Users users){
-        MutableLiveData<Users> usersMutableLiveData = new MutableLiveData<>();
-        Call<Users> call = api.createUser( users);
-        call.enqueue(new Callback<Users>() {
+    public MutableLiveData<UserDetails> createUser(UserDetails users){
+        MutableLiveData<UserDetails> usersMutableLiveData = new MutableLiveData<>();
+        Call<UserDetails> call = api.createUser(users);
+        call.enqueue(new Callback<UserDetails>() {
             @Override
-            public void onResponse(Call<Users> call, Response<Users> response) {
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(application, "notWorking: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application, "notWorking: " + response.raw(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                usersMutableLiveData.setValue(response.body());
+
+                Call<Auth> call1 = api.createInvoice(new Auth(users.getEmail()));
+                call1.enqueue(new Callback<Auth>() {
+
+                    @Override
+                    public void onResponse(Call<Auth> call, Response<Auth> response1) {
+                        if (response1.isSuccessful()) {
+                            usersMutableLiveData.setValue(response.body());
+                        } else {
+                            Toast.makeText(application, "notWorking: invoice " + response1.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Auth> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<Users> call, Throwable t) {
+            public void onFailure(Call<UserDetails> call, Throwable t) {
 
             }
         });
         return usersMutableLiveData;
     }
 
-    public MutableLiveData<Auth> createAccount( Auth auth) {
+    public MutableLiveData<Auth> createAccount(Auth auth) {
         MutableLiveData<Auth> authMutableLiveData = new MutableLiveData<>();
         Call<Auth> call = api.createAccount( auth);
         call.enqueue(new Callback<Auth>() {
             @Override
             public void onResponse(Call<Auth> call, Response<Auth> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(application, "notWorking: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Auth auth = new Auth();
+                    auth.setMessage("Email already exists");
+                    authMutableLiveData.setValue(auth);
                     return;
                 }
                 authMutableLiveData.setValue(response.body());
@@ -277,7 +298,7 @@ public class AuthRepository {
 
             @Override
             public void onFailure(Call<Auth> call, Throwable t) {
-
+                Toast.makeText(application, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         return authMutableLiveData;
@@ -418,6 +439,7 @@ public class AuthRepository {
                     @Override
                     public void run() {
                         context.startActivity(new Intent(context, LoginActivity.class));
+                        ((Activity)context).overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         //animation
                     }
                 }, 1500);

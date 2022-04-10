@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,26 +23,22 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -51,13 +46,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.shashank.spendistry.Adapters.DashboardInvoiceAdapter;
 import com.shashank.spendistry.Constants.Constants;
-import com.shashank.spendistry.DashboardActivity;
 import com.shashank.spendistry.EditProfileActivity;
 import com.shashank.spendistry.InvoicesActivity;
 import com.shashank.spendistry.LoginActivity;
-import com.shashank.spendistry.MainActivity;
 import com.shashank.spendistry.Models.BusinessDetail;
-import com.shashank.spendistry.Models.Dashboard;
 import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.ReportedInvoiceActivity;
@@ -65,11 +57,9 @@ import com.shashank.spendistry.TouchListener.OnSwipeTouchListener;
 import com.shashank.spendistry.ViewModels.DashboardViewModel;
 import com.shashank.spendistry.databinding.FragmentHomeBinding;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import ru.nikartm.support.ImageBadgeView;
 
@@ -80,14 +70,23 @@ public class HomeFragment extends Fragment {
     private String email;
     private ImageBadgeView imageBadgeView;
     private DashboardInvoiceAdapter adapter;
+    private DashboardViewModel dashboardViewModel;
     private RecyclerView recyclerView;
     private ArrayList<BusinessDetail> allData;
     private UserDetails userDetails;
     private FragmentHomeBinding binding;
+    private LinearLayout linearLayout;
 
     @Override
     public void onResume() {
         super.onResume();
+        if (dashboardViewModel != null) {
+            dashboardViewModel.getDashboard(linearLayout, email);
+            closeDrawer();
+        }
+    }
+
+    public void closeDrawer() {
         drawerLayout.closeDrawer(GravityCompat.START);
         navigationView.getMenu().getItem(0).setChecked(false);
         navigationView.getMenu().getItem(1).setChecked(false);
@@ -95,7 +94,14 @@ public class HomeFragment extends Fragment {
         navigationView.getMenu().getItem(3).setChecked(false);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    public boolean isConnected() throws IOException, InterruptedException {
+        String command="";
+        command = "ping -c 1 www.google.com";
+        return Runtime.getRuntime().exec(command).waitFor() == 0;
+    }
+
+
+    @SuppressLint({"ClickableViewAccessibility", "NonConstantResourceId"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -103,8 +109,8 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
-        LinearLayout linearLayout = root.findViewById(R.id.linear_layout);
+        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        linearLayout = root.findViewById(R.id.linear_layout);
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("loggedIn", MODE_PRIVATE);
         email = sharedPreferences.getString("email", "");
         //get navigation drawer
@@ -130,20 +136,61 @@ public class HomeFragment extends Fragment {
                     requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     break;
                 case R.id.nav_all_invoice:
-                    Intent intent0 = new Intent(getActivity(), InvoicesActivity.class);
-                    intent0.putExtra("activity", "all");
-                    startActivity(intent0);
+                    try {
+                        if (isConnected()) {
+                            Intent intent0 = new Intent(getActivity(), InvoicesActivity.class);
+                            intent0.putExtra("activity", "all");
+                            startActivity(intent0);
+                            requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
+                            snackbar.show();
+                            closeDrawer();
+                        }
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.reported_nav:
-                    Intent intent1 = new Intent(requireActivity(), ReportedInvoiceActivity.class);
-                    intent1.putExtra("email", email);
-                    startActivity(intent1);
-                    requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    try {
+                        if (isConnected()) {
+                            Intent intent1 = new Intent(requireActivity(), ReportedInvoiceActivity.class);
+                            intent1.putExtra("email", email);
+                            startActivity(intent1);
+                            requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
+                            snackbar.show();
+                            closeDrawer();
+
+                        }
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.returned_nav:
-                    Intent intent2 = new Intent(requireActivity(), InvoicesActivity.class);
-                    intent2.putExtra("activity", "returned");
-                    startActivity(intent2);
+                    try {
+                        if (isConnected()) {
+                            Intent intent2 = new Intent(requireActivity(), InvoicesActivity.class);
+                            intent2.putExtra("activity", "returned");
+                            startActivity(intent2);
+                            requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        } else {
+                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
+                            snackbar.show();
+                            closeDrawer();
+
+                        }
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
                 case R.id.logout_nav:
                     Intent intent3 = new Intent(requireActivity(), LoginActivity.class);
@@ -222,6 +269,7 @@ public class HomeFragment extends Fragment {
                 share.putExtra(Intent.EXTRA_STREAM, getImageUri(requireContext(),qr));
                 share.putExtra(Intent.EXTRA_TEXT,"Here’s the QR code specially designed for Spendistry and all incoming invoices shall be directed with this QR code.");
                 startActivity(Intent.createChooser(share,"Share via"));
+                requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
         return root;
@@ -242,10 +290,22 @@ public class HomeFragment extends Fragment {
         imageBadgeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(requireActivity(), ReportedInvoiceActivity.class);
-                intent1.putExtra("email", email);
-                startActivity(intent1);
-                requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                try {
+                    if (isConnected()){
+                        Intent intent1 = new Intent(requireActivity(), ReportedInvoiceActivity.class);
+                        intent1.putExtra("email", email);
+                        startActivity(intent1);
+                        requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                        snackbar.setTextColor(Color.WHITE);
+                        snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
+                        snackbar.show();
+                    }
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         android.widget.SearchView searchView = (android.widget.SearchView) menu.findItem(R.id.app_bar_search).getActionView();

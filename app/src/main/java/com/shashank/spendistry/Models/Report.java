@@ -43,6 +43,15 @@ public class Report {
         this.reason = reason;
     }
 
+    public Report(String invoiceID, String clientEmail, String businessName, String businessNumber, String businessEmail, String reason) {
+        InvoiceID = invoiceID;
+        this.clientEmail = clientEmail;
+        this.businessName = businessName;
+        this.businessNumber = businessNumber;
+        this.businessEmail = businessEmail;
+        this.reason = reason;
+    }
+
     public String getTime() {
         return time;
     }

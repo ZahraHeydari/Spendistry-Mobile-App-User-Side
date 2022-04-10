@@ -73,7 +73,7 @@ public class InvoiceRepository {
     public MutableLiveData<ResponseBody> getPDF(String email, String businessEmail, String invoiceId) {
         //download pdf file with retrofit 2
         MutableLiveData<ResponseBody> mutableLiveData = new MutableLiveData<>();
-        Call<ResponseBody> call = api.getPDF(email, businessEmail, invoiceId);
+        Call<ResponseBody> call = api.getPDF(email.trim(), businessEmail.trim(), invoiceId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -89,6 +89,27 @@ public class InvoiceRepository {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(application, "why??? "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<Report> reportInvoice(Report report){
+        MutableLiveData<Report> mutableLiveData = new MutableLiveData<>();
+        Call<Report> call = api.reportInvoice(report);
+        call.enqueue(new Callback<Report>() {
+            @Override
+            public void onResponse(Call<Report> call, Response<Report> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(application, "" + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Report> call, Throwable t) {
 
             }
         });
@@ -179,6 +200,28 @@ public class InvoiceRepository {
             }
             @Override
             public void onFailure(Call<ArrayList<Invoice>> call, Throwable t) {
+
+            }
+        });
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<ArrayList<Invoice>> getSingleReportedInvoice(String email,String businessEmail ,String invoiceId) {
+        MutableLiveData<ArrayList<Invoice>> mutableLiveData = new MutableLiveData<>();
+        Call<Invoice> call = api.getSingleReportedInvoice(email,businessEmail,invoiceId);
+        call.enqueue(new Callback<Invoice>() {
+            @Override
+            public void onResponse(Call<Invoice> call, Response<Invoice> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(application, "" + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ArrayList<Invoice> invoices = new ArrayList<>();
+                invoices.add(response.body());
+                mutableLiveData.setValue(invoices);
+            }
+            @Override
+            public void onFailure(Call<Invoice> call, Throwable t) {
 
             }
         });
