@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -39,8 +37,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.shashank.spendistry.Constants.Constants;
-import com.shashank.spendistry.Models.Dashboard;
 import com.shashank.spendistry.Models.UserDetails;
+import com.shashank.spendistry.R;
 import com.shashank.spendistry.ViewModels.AuthViewModel;
 
 import java.io.File;

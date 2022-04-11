@@ -33,29 +33,9 @@ public class InvoiceViewModel extends AndroidViewModel {
         dashboardRepository = new DashboardRepository(application);
     }
 
-//    public LiveData<Dashboard> getDashBoardFromDB(String email){
-//        return dashboardRepository.getDashBoardFromDB(email);
-//    }
-
-    public MutableLiveData<List<Report>> getReportedInvoices(String email){
-        return invoiceRepository.getReportedInvoices(email);
-    }
-
-    public void deleteReportRequest(LinearLayout linearLayout, String reportId){
-        invoiceRepository.deleteReportRequest(linearLayout, reportId);
-    }
-
     public MutableLiveData<ResponseBody> getPDF( String email, String businessEmail, String invoiceNumber){
 
         return invoiceRepository.getPDF(email,businessEmail,invoiceNumber);
-    }
-
-    public MutableLiveData<ArrayList<Invoice>> getBusinessInvoices(String email,String businessEmail){
-        return invoiceRepository.getBusinessInvoices(email, businessEmail);
-    }
-
-    public MutableLiveData<ArrayList<Invoice>> getAllInvoices(String email){
-        return invoiceRepository.getAllInvoices(email);
     }
 
     public MutableLiveData<ArrayList<Invoice>> getReturnedInvoices(String email){
@@ -69,9 +49,4 @@ public class InvoiceViewModel extends AndroidViewModel {
     public MutableLiveData<ArrayList<Invoice>> getSingleReportedInvoice(String email, String businessEmail, String invoiceID){
         return invoiceRepository.getSingleReportedInvoice(email, businessEmail, invoiceID);
     }
-
-
-
-
-
 }

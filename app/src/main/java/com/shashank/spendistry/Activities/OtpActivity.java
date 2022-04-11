@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.kevinschildhorn.otpview.OTPView;
+import com.shashank.spendistry.R;
 import com.shashank.spendistry.ViewModels.AuthViewModel;
 public class OtpActivity extends AppCompatActivity {
 

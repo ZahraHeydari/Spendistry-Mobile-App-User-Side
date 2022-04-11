@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -18,9 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.shashank.spendistry.R;
 import com.shashank.spendistry.ViewModels.AuthViewModel;
 
 import java.util.regex.Matcher;

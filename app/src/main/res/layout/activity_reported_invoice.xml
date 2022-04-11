@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/reported_invoice_layout"
     android:orientation="vertical"
-    tools:context=".ReportedInvoiceActivity">
+    tools:context=".Activities.ReportedInvoiceActivity">
 
 
     <com.google.android.material.card.MaterialCardView

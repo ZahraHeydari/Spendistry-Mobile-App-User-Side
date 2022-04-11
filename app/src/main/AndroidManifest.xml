@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.shashank.spendistry" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <!--        android:usesCleartextTraffic="true"-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,8 +17,8 @@
         android:hardwareAccelerated="true"
         android:theme="@style/Theme.Spendistry" >
         <activity
-            android:name=".InvoicesActivity"
-            android:parentActivityName=".DashboardActivity"
+            android:name=".Activities.InvoicesActivity"
+            android:parentActivityName=".Activities.DashboardActivity"
             android:exported="false" />
 
         <meta-data
@@ -25,49 +26,63 @@
             android:value="@string/API" />
 
         <activity
-            android:name=".BusinessProfileActivity"
+            android:name=".Activities.BusinessProfileActivity"
             android:exported="false"
-            android:parentActivityName=".ReportedInvoiceActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.ReportedInvoiceActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".OtpActivity"
+            android:name=".Activities.OtpActivity"
             android:exported="false"
-            android:parentActivityName=".EditProfileActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.EditProfileActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".Activities.ForgotPasswordActivity"
             android:exported="false"
-            android:parentActivityName=".OtpActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.OtpActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ReportedInvoiceActivity"
+            android:name=".Activities.ReportedInvoiceActivity"
             android:exported="false"
-            android:parentActivityName=".DashboardActivity" />
+            android:parentActivityName=".Activities.DashboardActivity" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".Activities.EditProfileActivity"
             android:exported="false"
-            android:parentActivityName=".DashboardActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.DashboardActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".Activities.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Spendistry.NoActionBar" />
+            android:theme="@style/Theme.Spendistry.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activities.RegisterActivity"
             android:exported="true"
-            android:parentActivityName=".LoginActivity" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.LoginActivity"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".splashScreenActivity"
+            android:name=".Activities.splashScreenActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme" >
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
+            android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BusinessProfileActivity">
+    tools:context=".Activities.BusinessProfileActivity">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/editPageCard"

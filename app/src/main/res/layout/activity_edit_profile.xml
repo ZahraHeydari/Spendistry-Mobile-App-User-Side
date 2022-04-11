@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/profile_layout"
     android:orientation="vertical"
-    tools:context=".EditProfileActivity">
+    tools:context=".Activities.EditProfileActivity">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/editPageCard"

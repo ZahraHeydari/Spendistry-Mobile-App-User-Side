@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +34,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.shashank.spendistry.R;
 import com.shashank.spendistry.databinding.ActivityDashboardBinding;
 import com.shashank.spendistry.ui.home.HomeFragment;
 

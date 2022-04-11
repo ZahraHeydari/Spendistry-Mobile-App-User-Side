@@ -1,13 +1,11 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
-import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,11 +22,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.shashank.spendistry.Constants.Constants;
+import com.shashank.spendistry.R;
+import com.shashank.spendistry.ViewModelFactory.ViewModelFactory;
 import com.shashank.spendistry.ViewModels.BusinessViewModel;
 
 public class BusinessProfileActivity extends AppCompatActivity {
@@ -56,13 +55,13 @@ public class BusinessProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String businessId = intent.getStringExtra("businessId");
-        BusinessViewModel businessViewModel = new ViewModelProvider(this).get(BusinessViewModel.class);
+        BusinessViewModel businessViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelFactory(getApplication(),businessId)).get(BusinessViewModel.class);
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.loading_layout);
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
-        businessViewModel.getVendor(businessId).observe(this, business -> {
+        businessViewModel.getVendor().observe(this, business -> {
             Glide.with(this).load(Constants.API_URL+"vendorProfile/"+businessId+".jpeg")
                     .placeholder(R.drawable.loading).error(R.drawable.no_profile) .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .apply(RequestOptions.skipMemoryCacheOf(true)).into(businessImage);

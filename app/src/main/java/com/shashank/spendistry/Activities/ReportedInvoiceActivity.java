@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -29,7 +28,9 @@ import android.widget.TextView;
 
 import com.shashank.spendistry.Adapters.ReportedInvoiceAdapter;
 import com.shashank.spendistry.Models.Report;
-import com.shashank.spendistry.ViewModels.InvoiceViewModel;
+import com.shashank.spendistry.R;
+import com.shashank.spendistry.ViewModelFactory.ViewModelFactory;
+import com.shashank.spendistry.ViewModels.ReportedInvoiceViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class ReportedInvoiceActivity extends AppCompatActivity {
 
-    private InvoiceViewModel invoiceViewModel;
+    private ReportedInvoiceViewModel reportedInvoiceViewModel;
     private  String email;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int recentPosition;
@@ -87,16 +88,17 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        SharedPreferences sharedPreferences = getSharedPreferences("loggedIn",MODE_PRIVATE);
+        email = sharedPreferences.getString("email","");
+        reportedInvoiceViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelFactory(getApplication(),email)).get(ReportedInvoiceViewModel.class);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this,R.color.mainBlue),ContextCompat.getColor(this,R.color.cardBlue), ContextCompat.getColor(this,R.color.windowBlue));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadData();
+                reportedInvoiceViewModel.setUserId(email);
             }
         });
-        invoiceViewModel = new ViewModelProvider(this).get(InvoiceViewModel.class);
-        SharedPreferences sharedPreferences = getSharedPreferences("loggedIn",MODE_PRIVATE);
-        email = sharedPreferences.getString("email","");
+        //fetch data and set adapter
         loadData();
 
 
@@ -137,7 +139,7 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
 
     }
     private void loadData(){
-        invoiceViewModel.getReportedInvoices(email).observe(this, new Observer<List<Report>>() {
+        reportedInvoiceViewModel.getReport().observe(this, new Observer<List<Report>>() {
             @Override
             public void onChanged(List<Report> reports) {
                 Collections.reverse(reports);
@@ -169,7 +171,7 @@ public class ReportedInvoiceActivity extends AppCompatActivity {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                invoiceViewModel.deleteReportRequest(linearLayout, report.getId());
+                reportedInvoiceViewModel.deleteReportRequest(linearLayout, report.getId());
                 dialog.dismiss();
             }
         });

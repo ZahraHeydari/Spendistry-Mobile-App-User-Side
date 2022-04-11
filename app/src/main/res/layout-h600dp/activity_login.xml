@@ -21,7 +21,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:minHeight="370dp"
         android:theme="@style/loginCard"
         app:cardBackgroundColor="@color/windowBlue"
@@ -117,7 +118,7 @@
                 android:id="@+id/reg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="10dp"
                 android:background="?attr/selectableItemBackground"
                 android:fontFamily="@font/alata"
                 android:gravity="center"

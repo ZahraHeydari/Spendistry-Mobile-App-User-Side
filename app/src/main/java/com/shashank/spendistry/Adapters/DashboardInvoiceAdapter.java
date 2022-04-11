@@ -8,15 +8,10 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,17 +20,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.shashank.spendistry.Constants.Constants;
-import com.shashank.spendistry.InvoicesActivity;
+import com.shashank.spendistry.Activities.InvoicesActivity;
 import com.shashank.spendistry.Models.BusinessDetail;
-import com.shashank.spendistry.Models.Invoice;
 import com.shashank.spendistry.R;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoiceAdapter.ViewHolder>{
 
@@ -83,7 +72,7 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
                         snackbar.setBackgroundTint(ContextCompat.getColor(context, R.color.red));
                         snackbar.show();
                     }
-                } catch (IOException | InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -96,9 +85,9 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
         return businessDetails.size();
     }
 
-    public boolean isConnected() throws IOException, InterruptedException {
+    public boolean isConnected() throws Exception {
         String command="";
-        command = "ping -c 1 www.google.com";
+        command = "ping -c 1 "+Constants.API_URL.replace("https://","").replace("/","");
         return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 

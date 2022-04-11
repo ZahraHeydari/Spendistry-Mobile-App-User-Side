@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -21,17 +20,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.shashank.spendistry.Constants.Constants;
-import com.shashank.spendistry.LoginActivity;
+import com.shashank.spendistry.Activities.LoginActivity;
 import com.shashank.spendistry.Models.Auth;
 import com.shashank.spendistry.Models.OTP;
-import com.shashank.spendistry.Models.Root;
 import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.Models.Users;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.SpendistryApi.SpendistryApi;
 
-
-import java.util.Random;
 
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;

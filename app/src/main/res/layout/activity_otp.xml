@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".OtpActivity">
+    tools:context=".Activities.OtpActivity">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/editPageCard"

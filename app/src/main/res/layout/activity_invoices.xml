@@ -6,7 +6,7 @@
     android:id="@+id/activity_invoices"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".InvoicesActivity">
+    tools:context=".Activities.InvoicesActivity">
     <com.google.android.material.card.MaterialCardView
         style="@style/editPageCard"
         android:layout_width="match_parent"

@@ -46,19 +46,19 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.shashank.spendistry.Adapters.DashboardInvoiceAdapter;
 import com.shashank.spendistry.Constants.Constants;
-import com.shashank.spendistry.EditProfileActivity;
-import com.shashank.spendistry.InvoicesActivity;
-import com.shashank.spendistry.LoginActivity;
+import com.shashank.spendistry.Activities.EditProfileActivity;
+import com.shashank.spendistry.Activities.InvoicesActivity;
+import com.shashank.spendistry.Activities.LoginActivity;
 import com.shashank.spendistry.Models.BusinessDetail;
 import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.R;
-import com.shashank.spendistry.ReportedInvoiceActivity;
+import com.shashank.spendistry.Activities.ReportedInvoiceActivity;
 import com.shashank.spendistry.TouchListener.OnSwipeTouchListener;
+import com.shashank.spendistry.ViewModelFactory.ViewModelFactory;
 import com.shashank.spendistry.ViewModels.DashboardViewModel;
 import com.shashank.spendistry.databinding.FragmentHomeBinding;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import ru.nikartm.support.ImageBadgeView;
@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (dashboardViewModel != null) {
-            dashboardViewModel.getDashboard(linearLayout, email);
+            dashboardViewModel.getDashboard();
             closeDrawer();
         }
     }
@@ -94,25 +94,24 @@ public class HomeFragment extends Fragment {
         navigationView.getMenu().getItem(3).setChecked(false);
     }
 
-    public boolean isConnected() throws IOException, InterruptedException {
+    public boolean isConnected() throws Exception {
         String command="";
-        command = "ping -c 1 www.google.com";
+        command = "ping -c 1 "+Constants.API_URL.replace("https://","").replace("/","");
         return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 
 
-    @SuppressLint({"ClickableViewAccessibility", "NonConstantResourceId"})
+    @SuppressLint({"ClickableViewAccessibility", "NonConstantResourceId", "SetTextI18n"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
         linearLayout = root.findViewById(R.id.linear_layout);
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("loggedIn", MODE_PRIVATE);
         email = sharedPreferences.getString("email", "");
+        dashboardViewModel = new ViewModelProvider(this, (ViewModelProvider.Factory) new ViewModelFactory(requireActivity().getApplication(),linearLayout,email)).get(DashboardViewModel.class);
+
         //get navigation drawer
         navigationView = requireActivity().findViewById(R.id.nav_view);
         drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
@@ -143,13 +142,10 @@ public class HomeFragment extends Fragment {
                             startActivity(intent0);
                             requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
-                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                            snackbar.setTextColor(Color.WHITE);
-                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
-                            snackbar.show();
+                            showSnackBar();
                             closeDrawer();
                         }
-                    } catch (IOException | InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
@@ -161,16 +157,13 @@ public class HomeFragment extends Fragment {
                             startActivity(intent1);
                             requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
-                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                            snackbar.setTextColor(Color.WHITE);
-                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
-                            snackbar.show();
+                            showSnackBar();
                             closeDrawer();
 
                         }
-                    } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
                     break;
                 case R.id.returned_nav:
                     try {
@@ -180,16 +173,12 @@ public class HomeFragment extends Fragment {
                             startActivity(intent2);
                             requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         } else {
-                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                            snackbar.setTextColor(Color.WHITE);
-                            snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
-                            snackbar.show();
+                            showSnackBar();
                             closeDrawer();
-
                         }
-                    } catch (IOException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (Exception e) {
+                e.printStackTrace();
+            }
 
                     break;
                 case R.id.logout_nav:
@@ -220,7 +209,7 @@ public class HomeFragment extends Fragment {
                 .placeholder(R.drawable.loading).error(R.drawable.no_profile).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .apply(RequestOptions.skipMemoryCacheOf(true)).into(navImage);
         //navbar onclick
-        dashboardViewModel.getDashboard(linearLayout,userId).observe(requireActivity(), dashboard -> {
+        dashboardViewModel.getDashboard().observe(requireActivity(), dashboard -> {
             if (dashboard != null) {
 
                 allData = dashboard.getBusinessDetails();
@@ -282,6 +271,13 @@ public class HomeFragment extends Fragment {
         return Uri.parse(path);
     }
 
+    private void showSnackBar(){
+        Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+        snackbar.setTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
+        snackbar.show();
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.dashboard_menu, menu);
@@ -297,12 +293,9 @@ public class HomeFragment extends Fragment {
                         startActivity(intent1);
                         requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                     } else {
-                        Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                        snackbar.setTextColor(Color.WHITE);
-                        snackbar.setBackgroundTint(ContextCompat.getColor(requireActivity(), R.color.red));
-                        snackbar.show();
+                        showSnackBar();
                     }
-                } catch (IOException | InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

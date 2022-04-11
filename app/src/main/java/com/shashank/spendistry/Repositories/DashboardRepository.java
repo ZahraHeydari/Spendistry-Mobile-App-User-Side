@@ -23,6 +23,7 @@ import com.shashank.spendistry.R;
 import com.shashank.spendistry.SpendistryApi.SpendistryApi;
 
 import java.io.IOException;
+import java.security.spec.ECField;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -43,9 +44,9 @@ public class DashboardRepository {
         database = SpendistryDatabase.getInstance(application);
     }
 
-    public boolean isConnected() throws IOException, InterruptedException {
+    public boolean isConnected() throws Exception {
         String command="";
-        command = "ping -c 1 www.google.com";
+        command = "ping -c 1 "+Constants.API_URL.replace("https://","").replace("/","");
         return Runtime.getRuntime().exec(command).waitFor() == 0;
     }
 
@@ -82,7 +83,6 @@ public class DashboardRepository {
                                     snackbar.show();
                                 }
                             }, 500);
-
                         }
                     }
                 });
@@ -100,7 +100,7 @@ public class DashboardRepository {
                });
 
             }
-        } catch (InterruptedException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return dashboardMutableLiveData;

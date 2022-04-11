@@ -11,12 +11,14 @@ import com.shashank.spendistry.Repositories.BusinessRepository;
 
 public class BusinessViewModel extends AndroidViewModel {
     private BusinessRepository businessRepository;
-    public BusinessViewModel(@NonNull Application application) {
+    MutableLiveData<Vendor> vendorMutableLiveData;
+    public BusinessViewModel(@NonNull Application application, String businessId) {
         super(application);
         businessRepository = new BusinessRepository(application);
+        vendorMutableLiveData = businessRepository.getVendor(businessId);
     }
 
-    public MutableLiveData<Vendor> getVendor(String businessId) {
-        return businessRepository.getVendor(businessId);
+    public MutableLiveData<Vendor> getVendor() {
+        return vendorMutableLiveData;
     }
 }

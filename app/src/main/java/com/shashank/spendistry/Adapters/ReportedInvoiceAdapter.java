@@ -2,36 +2,31 @@ package com.shashank.spendistry.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.material.snackbar.Snackbar;
-import com.shashank.spendistry.BusinessProfileActivity;
-import com.shashank.spendistry.InvoicesActivity;
+import com.shashank.spendistry.Activities.BusinessProfileActivity;
+import com.shashank.spendistry.Activities.InvoicesActivity;
 import com.shashank.spendistry.Models.Report;
 import com.shashank.spendistry.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ReportedInvoiceAdapter extends RecyclerView.Adapter<ReportedInvoiceAdapter.ViewHolder> {
 

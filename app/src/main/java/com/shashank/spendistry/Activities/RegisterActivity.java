@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.android.material.snackbar.Snackbar;
@@ -28,11 +27,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.kevinschildhorn.otpview.OTPView;
 import com.shashank.spendistry.Models.Auth;
 import com.shashank.spendistry.Models.UserDetails;
-import com.shashank.spendistry.Models.Users;
+import com.shashank.spendistry.R;
 import com.shashank.spendistry.ViewModels.AuthViewModel;
 
-import java.util.Random;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

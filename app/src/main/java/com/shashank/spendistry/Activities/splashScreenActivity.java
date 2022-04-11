@@ -1,4 +1,4 @@
-package com.shashank.spendistry;
+package com.shashank.spendistry.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
@@ -6,6 +6,8 @@ import androidx.constraintlayout.motion.widget.MotionLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import com.shashank.spendistry.R;
 
 public class splashScreenActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;

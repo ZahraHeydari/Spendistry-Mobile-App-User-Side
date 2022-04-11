@@ -37,6 +37,7 @@ public class InvoiceRepository {
     private Application application;
     private Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
     SpendistryApi api = retrofit.create(SpendistryApi.class);
+    private MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
 //    private SpendistryBusinessDB businessDB;
 //    private MutableLiveData<BusinessInvoices> mutableLiveData;
 
@@ -46,25 +47,34 @@ public class InvoiceRepository {
 //        businessDB = SpendistryBusinessDB.getInstance(application);
     }
 
+    public void setUserId(String email) {
+        stringMutableLiveData.setValue(email);
+    }
 
 
 
-    public MutableLiveData<List<Report>> getReportedInvoices(String email) {
+    public MutableLiveData<List<Report>> getReportedInvoices() {
         MutableLiveData<List<Report>> mutableLiveData = new MutableLiveData<>();
-        Call<List<Report>> call = api.getReportedInvoices(email);
-        call.enqueue(new Callback<List<Report>>() {
+        stringMutableLiveData.observeForever(new Observer<String>() {
             @Override
-            public void onResponse(Call<List<Report>> call, Response<List<Report>> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(application, "" + response.code(), Toast.LENGTH_SHORT).show();
-                    return;
+            public void onChanged(String s) {
+                if (s != null) {
+                    Call<List<Report>> call = api.getReportedInvoices(s);
+                    call.enqueue(new Callback<List<Report>>() {
+                        @Override
+                        public void onResponse(Call<List<Report>> call, Response<List<Report>> response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(application, "" + response.code(), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            mutableLiveData.setValue(response.body());
+                        }
+                        @Override
+                        public void onFailure(Call<List<Report>> call, Throwable t) {
+
+                        }
+                    });
                 }
-                mutableLiveData.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Report>> call, Throwable t) {
-
             }
         });
         return mutableLiveData;
