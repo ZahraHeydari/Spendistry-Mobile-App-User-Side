@@ -13,6 +13,7 @@ import com.shashank.spendistry.ViewModels.ReportedInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.ReturnedInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.SingleReportedViewModel;
 
+@SuppressWarnings("ALL")
 public class ViewModelFactory extends androidx.lifecycle.ViewModelProvider.NewInstanceFactory {
 
     private final Object[] mParams;

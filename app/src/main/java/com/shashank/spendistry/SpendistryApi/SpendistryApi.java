@@ -1,8 +1,6 @@
 package com.shashank.spendistry.SpendistryApi;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.shashank.spendistry.Models.Auth;
 import com.shashank.spendistry.Models.Dashboard;
 import com.shashank.spendistry.Models.Invoice;
@@ -12,7 +10,6 @@ import com.shashank.spendistry.Models.Root;
 import com.shashank.spendistry.Models.UserDetails;
 import com.shashank.spendistry.Models.Users;
 import com.shashank.spendistry.Models.Vendor;
-
 
 import java.util.ArrayList;
 import java.util.List;

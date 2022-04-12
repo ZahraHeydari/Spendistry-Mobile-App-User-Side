@@ -2,25 +2,19 @@ package com.shashank.spendistry.Repositories;
 
 import android.app.Application;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.shashank.spendistry.Constants.Constants;
 import com.shashank.spendistry.Models.Invoice;
 import com.shashank.spendistry.Models.Report;
 import com.shashank.spendistry.Models.Root;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.SpendistryApi.SpendistryApi;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +27,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("ALL")
 public class InvoiceRepository {
-    private Application application;
-    private Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
+    private final Application application;
+    private final Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create()).build();
     SpendistryApi api = retrofit.create(SpendistryApi.class);
-    private MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
-//    private SpendistryBusinessDB businessDB;
-//    private MutableLiveData<BusinessInvoices> mutableLiveData;
+    private final MutableLiveData<String> stringMutableLiveData = new MutableLiveData<>();
+
 
 
     public InvoiceRepository(Application application) {
         this.application = application;
-//        businessDB = SpendistryBusinessDB.getInstance(application);
     }
 
     public void setUserId(String email) {
@@ -138,7 +131,7 @@ public class InvoiceRepository {
                 }
                 Snackbar snackbar = Snackbar.make(linearLayout, "Reported Invoice Deleted", Snackbar.LENGTH_SHORT);
                 snackbar.setTextColor(Color.WHITE);
-                snackbar.setBackgroundTint(application.getResources().getColor(R.color.cardBlue));
+                snackbar.setBackgroundTint(application.getResources().getColor(R.color.mainBlue));
                 snackbar.show();
             }
 

@@ -105,72 +105,82 @@ public class AuthRepository {
     public void setNewProfilePic(ScrollView scrollView, String email, MultipartBody.Part part) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-        api = new Retrofit.Builder().baseUrl(Constants.API_URL).client(client).build().create(SpendistryApi.class);
-        retrofit2.Call<okhttp3.ResponseBody> req = api.setNewProfilePic(email,part);
-        req.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                // Do Something
-                if (!response.isSuccessful()) {
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+            api = new Retrofit.Builder().baseUrl(Constants.API_URL).client(client).build().create(SpendistryApi.class);
+            retrofit2.Call<okhttp3.ResponseBody> req = api.setNewProfilePic(email,part);
+            req.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    // Do Something
+                    if (!response.isSuccessful()) {
+                        Snackbar snackbar = Snackbar.make(scrollView, "Something went wrong!!", Snackbar.LENGTH_SHORT);
+                        snackbar.setTextColor(Color.WHITE);
+                        snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
+                        snackbar.show();
+                        return;
+                    }
+                    Snackbar snackbar = Snackbar.make(scrollView, "Profile picture updated", Snackbar.LENGTH_SHORT);
+                    snackbar.setTextColor(Color.WHITE);
+                    snackbar.setBackgroundTint(application.getResources().getColor(R.color.cardBlue));
+                    snackbar.show();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
                     Snackbar snackbar = Snackbar.make(scrollView, "Something went wrong!!", Snackbar.LENGTH_SHORT);
                     snackbar.setTextColor(Color.WHITE);
                     snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
                     snackbar.show();
-                    return;
                 }
-                Snackbar snackbar = Snackbar.make(scrollView, "Profile picture updated", Snackbar.LENGTH_SHORT);
-                snackbar.setTextColor(Color.WHITE);
-                snackbar.setBackgroundTint(application.getResources().getColor(R.color.cardBlue));
-                snackbar.show();
-            }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                Snackbar snackbar = Snackbar.make(scrollView, "Something went wrong!!", Snackbar.LENGTH_SHORT);
-                snackbar.setTextColor(Color.WHITE);
-                snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
-                snackbar.show();
-            }
-        });
 
     }
 
     public void deleteProfilePic(ScrollView layout,String id){
         Call<String> call = api.deleteProfilePic(id);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (!response.isSuccessful()) {
-                    if (response.code() == 404) {
-                        Snackbar snackbar = Snackbar.make(layout, "Profile picture not found", Snackbar.LENGTH_SHORT);
-                        snackbar.setTextColor(Color.WHITE);
-                        snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
-                        snackbar.show();
-                    } else {
-                        Snackbar snackbar = Snackbar.make(layout, "Something went wrong!!", Snackbar.LENGTH_SHORT);
-                        snackbar.setTextColor(Color.WHITE);
-                        snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
-                        snackbar.show();
+        try {
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (!response.isSuccessful()) {
+                        if (response.code() == 404) {
+                            Snackbar snackbar = Snackbar.make(layout, "Profile picture not found", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
+                            snackbar.show();
+                        } else {
+                            Snackbar snackbar = Snackbar.make(layout, "Something went wrong!!", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
+                            snackbar.show();
+                        }
+                        return;
                     }
-                    return;
+                    Snackbar snackbar = Snackbar.make(layout, "Profile picture deleted", Snackbar.LENGTH_SHORT);
+                    snackbar.setTextColor(Color.WHITE);
+                    snackbar.setBackgroundTint(application.getResources().getColor(R.color.cardBlue));
+                    snackbar.show();
                 }
-                Snackbar snackbar = Snackbar.make(layout, "Profile picture deleted", Snackbar.LENGTH_SHORT);
-                snackbar.setTextColor(Color.WHITE);
-                snackbar.setBackgroundTint(application.getResources().getColor(R.color.cardBlue));
-                snackbar.show();
-            }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                t.printStackTrace();
-                Snackbar snackbar = Snackbar.make(layout, "Something went wrong!!", Snackbar.LENGTH_SHORT);
-                snackbar.setTextColor(Color.WHITE);
-                snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
-                snackbar.show();
-            }
-        });
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    t.printStackTrace();
+                    Snackbar snackbar = Snackbar.make(layout, "Something went wrong!!", Snackbar.LENGTH_SHORT);
+                    snackbar.setTextColor(Color.WHITE);
+                    snackbar.setBackgroundTint(application.getResources().getColor(R.color.red));
+                    snackbar.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public MutableLiveData<String> onLogIn(LinearLayout linearLayout,String email, String password){
@@ -435,6 +445,7 @@ public class AuthRepository {
                     @Override
                     public void run() {
                         context.startActivity(new Intent(context, LoginActivity.class));
+                        ((Activity)context).finish();
                         ((Activity)context).overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                         //animation
                     }

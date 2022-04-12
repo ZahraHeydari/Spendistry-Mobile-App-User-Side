@@ -129,10 +129,19 @@ public class HomeFragment extends Fragment {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_edit:
-                    Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                    intent.putExtra("user", userDetails);
-                    startActivity(intent);
-                    requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    try {
+                        if (isConnected()) {
+                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                            intent.putExtra("user", userDetails);
+                            startActivity(intent);
+                            requireActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        } else {
+                            showSnackBar();
+                            closeDrawer();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.nav_all_invoice:
                     try {
@@ -211,7 +220,6 @@ public class HomeFragment extends Fragment {
         //navbar onclick
         dashboardViewModel.getDashboard().observe(requireActivity(), dashboard -> {
             if (dashboard != null) {
-
                 allData = dashboard.getBusinessDetails();
                 userDetails = dashboard.getUserDetails();
                 monthlyExp.setText(" ₹" + dashboard.getMonthlyTotalAll());

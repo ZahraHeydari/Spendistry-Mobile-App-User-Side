@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -22,8 +20,6 @@ import com.shashank.spendistry.Models.Dashboard;
 import com.shashank.spendistry.R;
 import com.shashank.spendistry.SpendistryApi.SpendistryApi;
 
-import java.io.IOException;
-import java.security.spec.ECField;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -32,12 +28,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("ALL")
 public class DashboardRepository {
-    private Application application;
-    private Gson gson = new GsonBuilder().setLenient().create();
-    private Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
+    private final Application application;
+    private final Gson gson = new GsonBuilder().setLenient().create();
+    private final Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_URL).addConverterFactory(GsonConverterFactory.create(gson)).build();
     SpendistryApi api = retrofit.create(SpendistryApi.class);
-    private SpendistryDatabase database;
+    private final SpendistryDatabase database;
 
     public DashboardRepository(Application application) {
         this.application = application;
