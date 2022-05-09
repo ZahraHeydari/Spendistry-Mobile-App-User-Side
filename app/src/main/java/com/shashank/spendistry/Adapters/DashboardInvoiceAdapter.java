@@ -25,6 +25,7 @@ import com.shashank.spendistry.Models.BusinessDetail;
 import com.shashank.spendistry.R;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoiceAdapter.ViewHolder>{
 
@@ -55,8 +56,7 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
         holder.business_monthly_exp.setText(" ₹"+businessDetails.get(position).getMonthlyTotal());
         holder.business_all_exp.setText(" ₹"+businessDetails.get(position).getAllTotal());
         Glide.with(activity).load(Constants.API_URL+"vendorProfile/"+businessDetails.get(position).getBusinessEmail()+".jpeg")
-                .placeholder(R.drawable.loading).error(R.drawable.no_profile) .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                .apply(RequestOptions.skipMemoryCacheOf(true)).into(holder.business_image);
+                .placeholder(R.drawable.loading).error(R.drawable.no_profile).into(holder.business_image);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +83,16 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
     @Override
     public int getItemCount() {
         return businessDetails.size();
+    }
+
+    public void setBusinessDetails(ArrayList<BusinessDetail> businessDetails) {
+        this.businessDetails = businessDetails;
+        notifyDataSetChanged();
+    }
+
+    //get Business Details
+    public BusinessDetail getBusinessDetails(int position) {
+        return businessDetails.get(position);
     }
 
     public boolean isConnected() throws Exception {
@@ -118,7 +128,5 @@ public class DashboardInvoiceAdapter extends RecyclerView.Adapter<DashboardInvoi
             business_all_exp = itemView.findViewById(R.id.business_all_exp);
             business_image = itemView.findViewById(R.id.business_profile);
         }
-
-
     }
 }

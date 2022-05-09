@@ -95,7 +95,7 @@ public class BusinessProfileActivity extends AppCompatActivity {
                             public void onMapReady(GoogleMap googleMap) {
                                 googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(BusinessProfileActivity.this, R.raw.aubergine));
                                 googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(business.getLat()), Double.parseDouble(business.getLng()))).title("Shop Location"));
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(business.getLat()), Double.parseDouble(business.getLng())), 15));
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(business.getLat()), Double.parseDouble(business.getLng())), 20));
                             }
                         });
                     }

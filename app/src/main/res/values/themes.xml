@@ -102,13 +102,6 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
 
-    <!--    <style name="ThemeOverlay.App.BottomNavigationView" parent="">-->
-    <!--        <item name="colorSurface">@color/design_default_color_background</item>-->
-    <!--        <item name="colorOnSurfaceVariant">@color/black</item>-->
-    <!--        <item name="colorOnBackground">@color/mainBlue</item>-->
-    <!--        <item name="backgroundTint">@color/mainBlue</item>-->
-
-    <!--    </style>-->
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorSurface">@color/cardBlue</item>

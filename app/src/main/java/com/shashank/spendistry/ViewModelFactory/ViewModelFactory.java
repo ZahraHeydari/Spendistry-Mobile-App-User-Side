@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.shashank.spendistry.ViewModels.AllInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.BusinessInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.BusinessViewModel;
-import com.shashank.spendistry.ViewModels.DashboardViewModel;
+import com.shashank.spendistry.ViewModels.DashboardFragmentViewModel;
 import com.shashank.spendistry.ViewModels.ReportedInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.ReturnedInvoiceViewModel;
 import com.shashank.spendistry.ViewModels.SingleReportedViewModel;
@@ -30,8 +30,8 @@ public class ViewModelFactory extends androidx.lifecycle.ViewModelProvider.NewIn
         //noinspection unchecked
         if (modelClass.isAssignableFrom(BusinessViewModel.class)) {
             return (T) new BusinessViewModel(mApplication, (String) mParams[0]);
-        } else if (modelClass.isAssignableFrom(DashboardViewModel.class)) {
-            return (T) new DashboardViewModel(mApplication, (LinearLayout) mParams[0], (String) mParams[1]);
+        } else if (modelClass.isAssignableFrom(DashboardFragmentViewModel.class)) {
+            return (T) new DashboardFragmentViewModel(mApplication, (LinearLayout) mParams[0], (String) mParams[1]);
         } else if (modelClass.isAssignableFrom(ReportedInvoiceViewModel.class)) {
             return (T) new ReportedInvoiceViewModel(mApplication, (String) mParams[0]);
         } else if (modelClass.isAssignableFrom(BusinessInvoiceViewModel.class)) {

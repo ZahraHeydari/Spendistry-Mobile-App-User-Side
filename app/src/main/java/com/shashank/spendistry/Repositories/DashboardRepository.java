@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -41,66 +42,42 @@ public class DashboardRepository {
         database = SpendistryDatabase.getInstance(application);
     }
 
-    public boolean isConnected() throws Exception {
-        String command="";
-        command = "ping -c 1 "+Constants.API_URL.replace("https://","").replace("/","");
-        return Runtime.getRuntime().exec(command).waitFor() == 0;
+
+
+    public void fetchDashboardData(LinearLayout linearLayout, String email){
+        Call<Dashboard> call = api.getDashboard(email);
+        call.enqueue(new Callback<Dashboard>() {
+            @Override
+            public void onResponse(Call<Dashboard> call, Response<Dashboard> response) {
+                if (response.isSuccessful()) {
+                    new addDashboardData(application, database).execute(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dashboard> call, Throwable t) {
+                if (Objects.requireNonNull(t.getMessage()).startsWith("Unable to resolve host")) {
+                    database.dashboardDao().getDashboard(email).observeForever(new Observer<Dashboard>() {
+                        @Override
+                        public void onChanged(Dashboard dashboard) {
+                        }
+                    });
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
+                            snackbar.setTextColor(Color.WHITE);
+                            snackbar.setBackgroundTint(ContextCompat.getColor(application, R.color.red));
+                            snackbar.show();
+                        }
+                    }, 500);
+                }
+            }
+        });
     }
 
-    public MutableLiveData<Dashboard> getDashboard(LinearLayout linearLayout,String email) {
-        MutableLiveData<Dashboard> dashboardMutableLiveData = new MutableLiveData<>();
-        try {
-            if (isConnected()) {
-                Call<Dashboard> call = api.getDashboard(email);
-                call.enqueue(new Callback<Dashboard>() {
-                    @Override
-                    public void onResponse(Call<Dashboard> call, Response<Dashboard> response) {
-                        if (response.isSuccessful()) {
-                            dashboardMutableLiveData.setValue(response.body());
-                            new addDashboardData(application, database).execute(response.body());
-                        }
-                        dashboardMutableLiveData.setValue(null);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Dashboard> call, Throwable t) {
-                        if (Objects.requireNonNull(t.getMessage()).startsWith("Unable to resolve host")) {
-                            database.dashboardDao().getDashboard(email).observeForever(new Observer<Dashboard>() {
-                                @Override
-                                public void onChanged(Dashboard dashboard) {
-                                    dashboardMutableLiveData.setValue(dashboard);
-                                }
-                            });
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                                    snackbar.setTextColor(Color.WHITE);
-                                    snackbar.setBackgroundTint(ContextCompat.getColor(application, R.color.red));
-                                    snackbar.show();
-                                }
-                            }, 500);
-                        }
-                    }
-                });
-            }
-        else {
-               database.dashboardDao().getDashboard(email).observeForever(new Observer<Dashboard>() {
-                   @Override
-                   public void onChanged(Dashboard dashboard) {
-                       dashboardMutableLiveData.setValue(dashboard);
-                       Snackbar snackbar = Snackbar.make(linearLayout, "Internet is not available", Snackbar.LENGTH_SHORT);
-                       snackbar.setTextColor(Color.WHITE);
-                       snackbar.setBackgroundTint(ContextCompat.getColor(application, R.color.red));
-                       snackbar.show();
-                   }
-               });
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dashboardMutableLiveData;
+    public LiveData<Dashboard> getDashboard(String email) {
+        return database.dashboardDao().getDashboard(email);
     }
 
     static class addDashboardData extends AsyncTask<Dashboard, Void, Void> {
