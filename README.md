@@ -64,6 +64,15 @@ This is one stop solution for invoice management. Users can find all invoices in
 
 ## Screenshots
 
+<div style="display:flex;">
+<img alt="App image" src="SS/1.jpeg" width="25%">
+<img alt="App image" src="SS/2.jpeg" width="25%">
+<img alt="App image" src="SS/3.jpeg" width="25%">
+<img alt="App image" src="SS/4.jpeg" width="25%">
+<img alt="App image" src="SS/5.jpeg" width="25%">
+<img alt="App image" src="SS/6.jpeg" width="25%">
+</div>
+
 ## Demo
 
 https://youtu.be/P0dRwZI3Js0
